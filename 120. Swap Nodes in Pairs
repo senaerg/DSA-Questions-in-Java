@@ -1,0 +1,24 @@
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        //create dummy node to ease things
+        ListNode dummy=new ListNode(0);
+        dummy.next=head;
+        ListNode point=dummy;
+        //ensure nodes we are swapping are not null
+        while(point.next!=null&&point.next.next!=null){
+            //identify nodes to sawp
+            ListNode swap1=point.next;
+            ListNode swap2=point.next.next;
+
+            //actually swap
+            swap1.next=swap2.next;
+            swap2.next=swap1;
+
+            //prepare for next
+            point.next=swap2;
+            point=swap1;
+        }
+            //return start node
+            return dummy.next;
+        }
+ }
