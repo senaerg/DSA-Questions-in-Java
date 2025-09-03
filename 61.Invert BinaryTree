@@ -1,0 +1,16 @@
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        dfsInvert(root);
+        return root;
+    }
+    private void dfsInvert(TreeNode root){
+
+        if(root==null) return;
+        TreeNode temp=root.left;
+        root.left=root.right;
+        root.right=temp;
+        dfsInvert(root.left);
+        dfsInvert(root.right);
+
+    }
+}
