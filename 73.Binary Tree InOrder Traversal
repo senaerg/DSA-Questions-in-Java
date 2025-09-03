@@ -1,0 +1,38 @@
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        //init list to store in odrder traverse result 
+        //emtpy list
+        List<Integer> result=new ArrayList<>();
+        //continue process untill all nodes are visited
+        while(root!=null){
+            //if no left child, visit cur node and go to right kid
+            if(root.left==null){
+                result.add(root.val);
+                root=root.right;
+            }
+            else{
+                //find inorder predeceor of curr node
+                TreeNode predecessor=root.left;
+                //move to rigt most node of left tree or right kid of predesor
+                while(predecessor.right!=null&&predecessor.right!=root){
+                    predecessor=predecessor.right;
+                }
+                //if right child of precdesor not set, first time visit node
+                //set right child to cur node , move to left kid
+                if(predecessor.right==null){
+                    predecessor.right=root;
+                    root=root.left;
+                }
+                else{
+                    //right kid set to cur node, we are visiting node 2nd time
+                    //visit cur node and remove link
+                    result.add(root.val);
+                    predecessor.right=null;
+                    root=root.right;
+                }
+            }
+        }
+
+
+        return result;
+    }
