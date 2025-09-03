@@ -1,0 +1,32 @@
+lass Solution {
+    //map to store cum sum up to all ancestors of a node and their respoective counts
+    private Map<Long,Integer> cumSumCount=new HashMap<>();
+    private int targetSum;//targ sum to find in the path
+    public int pathSum(TreeNode root, int targetSum) {
+        //init map with zero cumsum having count of one
+        cumSumCount.put(0L,1);
+        //store target sum in global variable to use in dfs function
+        this.targetSum=targetSum;
+        //start dfsTraverse
+        return dfs(root,0);
+    }
+    //dfs travesrse find paths=sum ==targetsum
+    private int dfs(TreeNode node, long curSum){
+        //if curnode is null, 0, no paths
+        if(node==null) return 0;
+        //add curnode val to cum sum
+        curSum+=node.val;
+        //find no of paths ends at this node => sum=tarSum
+        int pathCo=cumSumCount.getOrDefault(curSum-targetSum,0);
+        //update map with new cum sum, incre count by 1
+        cumSumCount.merge(curSum,1,Integer::sum);
+        //recursive call dfs for left child
+        pathCo+=dfs(node.left,curSum);
+         pathCo+=dfs(node.right,curSum);
+         //after kids processed, decrement count of curSum path Count , it shouldnt be counted at other paths
+         cumSumCount.merge(curSum,-1,Integer::sum);
+         //return total count of valid paths found from this node
+         return pathCo;
+
+    }
+}
