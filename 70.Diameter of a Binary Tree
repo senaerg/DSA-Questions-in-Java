@@ -1,0 +1,16 @@
+class Solution {
+    int largestDiam=0;
+    public int diameterOfBinaryTree(TreeNode root) {
+
+        height(root);
+        return largestDiam;
+    }
+    private int height(TreeNode root){
+        if(root==null) return 0;
+        int leftH=height(root.left);
+        int rightH=height(root.right);
+        int diam=leftH+rightH;
+        largestDiam=Math.max(diam,largestDiam);
+        return Math.max(leftH,rightH)+1;
+    }
+}
