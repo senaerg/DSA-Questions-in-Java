@@ -1,0 +1,26 @@
+class Solution {
+    public Node connect(Node root) {
+        if(root==null) return root;
+        Deque<Node> queu=new ArrayDeque<>();
+        queu.offer(root);
+        while(!queu.isEmpty()){
+           Node prevNode=null;
+            for(int i=queu.size();i>0;i--){
+
+            Node curNode=queu.poll();
+                if(prevNode!=null){
+                    prevNode.next=curNode;
+                }
+                prevNode=curNode;
+                if(curNode.left!=null){
+                    queu.offer(curNode.left);
+                }
+                if(curNode.right!=null){
+                    queu.offer(curNode=curNode.right);
+                }
+            }
+        }
+
+        return root;
+    }
+}
