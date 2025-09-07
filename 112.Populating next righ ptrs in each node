@@ -16,7 +16,7 @@ class Solution {
                     queu.offer(curNode.left);
                 }
                 if(curNode.right!=null){
-                    queu.offer(curNode=curNode.right);
+                    queu.offer(curNode.right);
                 }
             }
         }
