@@ -1,0 +1,38 @@
+class Solution {
+    public int numBusesToDestination(int[][] routes, int source, int target) {
+        int n=routes.length;
+        Map<Integer,HashSet<Integer>> toroute=new HashMap<>();
+        for(int i=0;i<n;++i){
+            for(int j:routes[i]){
+                if(!(toroute.containsKey(j))){
+                    toroute.put(j,new HashSet<Integer>());
+                }
+                toroute.get(j).add(i);
+            }
+        }
+        Queue<int[]> bfs=new ArrayDeque();
+        bfs.offer(new int[]{source,0});
+        Set<Integer> seen=new HashSet<>();
+        seen.add(source);
+        boolean[] seenroute=new boolean[n];
+        while(!bfs.isEmpty()){
+            int stop=bfs.peek()[0],bus=bfs.peek()[1];
+            bfs.poll();
+            if(stop==target) return bus;
+                if(toroute.containsKey(stop)){
+            for(int i:toroute.get(stop)){
+                if(seenroute[i]) continue;
+                for(int j:routes[i]){
+                    if(!seen.contains(j)){
+                        seen.add(j);
+                        bfs.offer(new int[]{j,bus+1});
+                    }
+                }
+                seenroute[i]=true;
+            }
+                }
+
+        }
+        return -1;
+    }
+}
