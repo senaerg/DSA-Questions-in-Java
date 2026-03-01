@@ -1,0 +1,44 @@
+import java.util.*; 
+ public class KnightMoves {  
+    public static int knightMovesBounded(int x, int y) {  
+       // Convert to absolute values to handle all 4 quadrants symmetrically  
+       x = Math.abs(x); 
+        y = Math.abs(y);    
+      // Base case: already at destination 
+        if (x == 0 && y == 0) return 0;  
+        // Set a bounding box to prevent infinite searching. 
+        // The target is at (x,y), so the search doesn't need to go much further. 
+        int bound = Math.max(x, y) + 4;   
+       // Queue for BFS: stores {x, y, current_distance}   
+      Queue<int[]> queue = new LinkedList<>(); 
+        // Set to keep track of visited coordinates to avoid cycles  
+       Set<String> visited = new HashSet<>();   
+       // Start BFS from (0,0) with 0 distance  
+       queue.add(new int[]{0, 0, 0}); 
+        visited.add("0,0"); 
+         // 8 possible knight moves 
+        int[][] moves = {{2,1}{1,2}{-1,2}{-2,1}{-2-1}{-1-2}{1-2}{2-1}}; 
+         while (!queue.isEmpty()) { 
+            int[] curr = queue.poll();  
+            for (int[] move : moves) {  
+               int nx = curr[0] + move[0]; 
+                int ny = curr[1] + move[1];    
+              // Check if target is reached   
+              if (nx == x && ny == y) return curr[2] + 1;     
+             String key = nx + "" + ny;    
+             // Boundary check (optional optimization) and visited check 
+                if (!visited.contains(key) && Math.abs(nx) <= bound && Math.abs(ny) <= bound) {
+                     visited.add(key);   
+                  queue.add(new int[]{nx, ny, curr[2] + 1});   
+              }  
+           }//end of for     
+    } //end of while 
+         return -1; // Should not be reached given constraints 
+    } 
+     public static void main(String[] args) { 
+        System.out.println(knightMovesBounded(5, 5)); 
+// Expected: 4
+     }
+ } 
+ Time Complexity:  max((|x|{y|)^2. 
+Space Complexity:  max((|x|{y|)^2 to store the visited set and queue
