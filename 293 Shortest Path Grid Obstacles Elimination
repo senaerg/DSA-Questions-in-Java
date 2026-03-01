@@ -1,0 +1,51 @@
+class Solution { 
+    // Directions: right, left, down, up 
+    int[][] dirs = new int[][]{{0,1},{0,-1},{1,0},{-1,0}}; 
+     public int shortestPath(int[][] grid, int k) {      
+     int n = grid.length;          // number of rows   
+     int m = grid[0].length;       // number of columns    
+    // BFS queue stores {row, col, obstacles_eliminated}       
+    Queue<int[]> q = new LinkedList<>();       
+    // visited[r][c][x] -> whether cell (r, c) was visited with x obstacles eliminated        
+    boolean[][][] visited = new boolean[n][m][k+1];      
+    visited[0][0][0] = true; 
+     // start point (0,0) with 0 obstacles removed     
+     q.offer(new int[]{0,0,0});   
+      int res = 0;  
+     // number of steps / path length        
+     // Breadth-First Search (BFS) loop    
+     while(!q.isEmpty()) {  
+           int size = q.size(); 
+         // process one level at a time for step count   
+          for(int i = 0; i < size; i++) {       
+            int[] info = q.poll();    
+            int r = info[0], c = info[1], curK = info[2];   
+            // If reached bottom-right corner, return steps          
+            if(r == n-1 && c == m-1) {      
+               return res;          
+           }              
+          // Explore all four directions      
+           for(int[] dir : dirs) {       
+              int nextR = r + dir[0];          
+              int nextC = c + dir[1];         
+              int nextK = curK;               
+              // Stay inside grid bounds       
+              if(nextR >= 0 && nextR < n && nextC >= 0 && nextC < m) {                   
+                // If obstacle, increment elimination counter                  
+                 if(grid[nextR][nextC] == 1) {         
+                    nextK++;      
+                   }                  
+                 // If still within allowed obstacle removals and not yet visited in this state       
+                 if(nextK <= k && !visited[nextR][nextC][nextK]) {                
+                   visited[nextR][nextC][nextK] = true;                      
+                   q.offer(new int[]{nextR, nextC, nextK});              
+                  }               
+              }        //end of if grid bounds
+           }     //end of directions for            
+         }      //end of outer for size
+       res++; // increment path length after each BFS level
+         }      // EOF while  
+      // No valid path found   
+      return -1; 
+    } 
+} 
