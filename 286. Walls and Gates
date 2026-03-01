@@ -41,3 +41,5 @@ public void wallsAndGates(int[][] rooms) {
          }
      }
  } 
+Time Complexity: O(m*n) Single pass through the data
+ Space Complexity: O(m*n) for the BFS queue Space for the data structure
