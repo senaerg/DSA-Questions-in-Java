@@ -1,0 +1,43 @@
+public void wallsAndGates(int[][] rooms) { 
+    // Check if the input array is null or empty
+     if (rooms == null || rooms.length == 0 || rooms[0].length == 0) {  
+       return;
+     }  
+    // Get the dimensions of the grid 
+    int m = rooms.length; 
+    int n = rooms[0].length;
+    // Define the constant for empty rooms (infinity)
+     int INF = 2147483647; 
+     // Initialize a queue for the multi-source BFS 
+    Queue<int[]> queue = new LinkedList<>(); 
+     // Find all gates (value 0) and add their coordinates to the queue 
+    for (int i = 0; i < m; i++) {
+         for (int j = 0; j < n; j++) { 
+            if (rooms[i][j] == 0) { 
+                queue.offer(new int[]{i, j}); 
+            } 
+        } 
+    }
+      // Define directions for moving up, down, left, and right 
+    int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};  
+    // Perform a Breadth-First Search (BFS) starting from all gates simultaneously   
+  while (!queue.isEmpty()) {  
+       // Dequeue the current cell's coordinates
+         int[] current = queue.poll();  
+       int row = current[0]; 
+        int col = current[1]; 
+         // Explore all 4 neighbors
+         for (int[] dir : directions) { 
+            int newRow = row + dir[0]; 
+            int newCol = col + dir[1];  
+            // Check if the new cell is within bounds, and if it's an empty room (INF)
+             if (newRow >= 0 && newRow < m && newCol >= 0 && newCol < n && rooms[newRow][newCol] == INF) { 
+                // Update the distance to the nearest gate
+                 // The distance is the parent's distance + 1  
+               rooms[newRow][newCol] = rooms[row][col] + 1; 
+                // Enqueue the neighbor to explore its neighbors next 
+                queue.offer(new int[]{newRow, newCol}); 
+            }
+         }
+     }
+ } 
