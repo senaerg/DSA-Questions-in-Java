@@ -49,3 +49,7 @@ class Solution {
       return -1; 
     } 
 } 
+Complexity Analysis:
+Time Complexity: 
+O ( n × m × ( k + 1 ) ) O(n×m×(k+1)) Each state is defined by (r, c, obstacles_removed) — meaning each cell can be visited at most  k + 1 k+1 times (once per obstacle-elimination count). Each visit processes up to 4 neighbors (constant factor).  
+Space Complexity: O ( n × m × ( k + 1 ) ) O(n×m×(k+1)) Due to the visited 3D array and the BFS queue which can hold similar states.  
