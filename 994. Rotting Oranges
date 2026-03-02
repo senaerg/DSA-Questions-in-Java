@@ -1,0 +1,71 @@
+    public int orangesRotting(int[][] grid) { 
+        // 1. Edge Case: If the grid doesn't exist, no time is needed 
+        if(grid == null || grid.length == 0) return 0; 
+        int rows = grid.length;
+         int cols = grid[0].length; 
+         // Queue stores coordinates [row, col] of oranges that are currently rotten 
+        Queue<int[]> queue = new LinkedList<>();
+         int count_fresh = 0; 
+         // 2. Initial Scan:  
+       // Find all initially rotten oranges to start the BFS and count fresh ones 
+        for(int i = 0 ; i < rows ; i++) {  
+           for(int j = 0 ; j < cols ; j++) { 
+                if(grid[i][j] == 2) {  
+                   queue.offer(new int[]{i , j}); 
+                  // Add to start of "infection"  
+               } 
+               else if(grid[i][j] == 1) {  
+                   count_fresh++;
+                // We need to track these to see if they all rot
+                 }   
+          }   
+      }  
+        // If there are no fresh oranges to begin with, 0 minutes have passed  
+       if(count_fresh == 0) return 0;  
+        int count = 0; 
+        // Tracks minutes passed 
+        // 4-Directional movement: Down, Up, Right, Left   
+      int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};   
+       // 3. BFS Process:  
+       While(!queue.isEmpty()) {  
+           ++count; // Increment time as we move to the next "layer" of oranges  
+           int size = queue.size(); // Number of oranges rotting others at THIS minute   
+           for(int i = 0 ; i < size ; i++) {  
+               int[] point = queue.poll();   
+                for(int dir[] : dirs) {   
+                  int x = point[0] + dir[0];  
+                   int y = point[1] + dir[1]; 
+                     // Skip if: Out of bounds, cell is empty (0), or orange is already rotten (2) 
+                    if(x < 0 || y < 0 || x >= rows || y >= cols || grid[x][y] == 0 || grid[x][y] == 2) {   
+                      continue;                     }   
+                       // "Infect" the fresh orange   
+                  grid[x][y] = 2;   
+                  // Add new rotten orange to queue to infect neighbors in the NEXT minute    
+                 queue.offer(new int[]{x , y});   
+                  // One less fresh orange remains in the grid   
+                  count_fresh--;   
+              }   
+          } 
+        }  
+        // 4. Final Result:   
+     // If count_fresh is 0, all oranges rotted.  
+        // We return 'count - 1' because the last level of BFS adds a minute even if no  
+        // new oranges were actually infected in the final loop.  
+       // If count_fresh > 0, it means some oranges are unreachable; return -1. 
+        return count_fresh == 0 ? count - 1 : -1;  
+   } 
+
+ Time Complexity:  
+Scanning the Grid:
+ You first traverse every cell once to find initially rotten oranges and count fresh ones, which takes   time. 
+BFS Traversal:
+ In the worst-case scenario, every cell contains a fresh orange that eventually rots. 
+Since each cell is added to the queue at most once and processed once, the BFS also takes   time. 
+Total:  O(MxN)+O((MxN)=O(MxN) where   is the number of rows and   is the number of columns.  
+Space Complexity: 
+ Queue Storage: 
+In the worst case, the queue may need to store all the cells in the grid simultaneously 
+(e.g., if all oranges are rotten at the start or if a large "wave" of oranges rots at once). 
+Total:  O(MXN) to account for the auxiliary space used by the queue. 
+ Note on Constraints: 
+On platforms like LeetCode, the grid size is typically small (e.g., up to  ), making this   approach extremely efficie
